@@ -1,0 +1,121 @@
+@* 
+    With Razor, C# codes can be written with HTML codes in the views.
+*@
+
+@* This is a Razor comment. *@
+
+@* Model of the view type declaration: *@
+@* @model IEnumerable<Business.UserModel> *@
+@model IEnumerable<UserModel> 
+    
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+@* 
+    The type of the model object of this view is IEnumerable<UserModel> and 
+    this object can be used by writing Model within Razor syntax.
+*@
+
+@{
+    string title = "User List";
+    ViewData["Title"] = title; @* ViewData is used for carrying data between views and from actions to views. *@
+
+    int count = Model.Count();
+    @* Count method returns the element count of an IEnumerable collection. *@
+
+    @* Ternary Operator *@
+    string countOutput = count == 0 ? "No records found." : count == 1 ? "1 record found." : count + " records found.";
+}
+
+<h1>@title</h1> @* The string value set above will be written in the h1 tag. *@
+
+<p>
+    @* HTML: *@
+    @* <a href="/Users/Create">Create New</a> *@
+    @* Tag Helper Way 1: *@
+    @* <a asp-action="Create" asp-controller="Users">Create New</a> *@
+    @* Tag Helper Way 2: no need to write controller because we are under the Views/Users folder with the Create view. *@
+    <a asp-action="Create">Create New</a>
+</p>
+
+@* if there is a redirection in an action, the data should be carried with TempData to the redirected action's view *@
+@if (TempData["Message"] is not null)
+{
+    <p class="text-success">@TempData["Message"]</p>
+}
+
+@* displaying the model's element count *@
+<p class="text-info">
+    @countOutput
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @* HTML: *@
+                @* User Name *@
+                @* HTML Helper: uses the DisplayName attribute of the UserName property in the UserModel class. *@
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password) @* property for formatted or extra data in the service *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActiveOutput) @* property for formatted or extra data in the service *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleNameOutput) @* property for formatted or extra data in the service *@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+		@foreach (var item in Model) {
+				<tr>
+					<td>
+
+                        @* Way 1: *@
+                        @* @item.UserName *@
+                        @* Way 2: HTML Helper: writes the data of the UserName property in the UserModel class. *@
+						@Html.DisplayFor(modelItem => item.UserName)
+
+					</td>
+                     <td>
+                         @Html.DisplayFor(modelItem => item.Password) @* property for formatted or extra data in the service *@
+                    </td>
+					<td>
+						@Html.DisplayFor(modelItem => item.IsActiveOutput) @* property for formatted or extra data in the service *@
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Status)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.RoleNameOutput) @* property for formatted or extra data in the service *@
+					</td>
+					<td>
+                        @* HTML Way 1: query string *@
+                        @* <a href="/Users/Details?id=@item.Id">Details</a> *@
+                        @* Example: <a href="/Users/Details?id=13">Details</a> *@
+                        @* HTML Way 2: route value *@
+                        @* <a href="/Users/Details/@item.Id">Details</a> *@
+                        @* Example: <a href="/Users/Details/13">Details</a> *@
+                        @* HTML Helper: the last parameter of the helper method is the route value which must be the same as action's parameter name (id) *@
+						@* @Html.ActionLink("Details", "Details", new { id = item.Id }) *@
+                        @* Tag Helper Way 1: asp-route-id is the route value which must be the same as action's parameter name (id) *@
+                        @* <a asp-action="Details" asp-controller="Users" asp-route-id="@item.Id">Details</a>&nbsp;|&nbsp; *@
+                        @* Tag Helper Way 2: no need to write the controller *@
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>&nbsp;|&nbsp;
+						
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>&nbsp;|&nbsp;
+						<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+					</td>
+				</tr>
+		}
+    </tbody>
+</table>
+
+
+

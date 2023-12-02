@@ -1,0 +1,90 @@
+﻿@using Business.Models
+@model ResourceModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Resource</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Create" autocomplete="off">
+		@Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row mb-3">
+                <label asp-for="Title" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<input asp-for="Title" class="form-control" />
+					<span asp-validation-for="Title" class="text-danger"></span>
+				</div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Content" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<textarea asp-for="Content" class="form-control" rows="4"></textarea>
+					<span asp-validation-for="Content" class="text-danger"></span>
+				</div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Score" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<input asp-for="Score" class="form-control" />
+					<span asp-validation-for="Score" class="text-danger"></span>
+				</div>
+            </div>
+            <div class="row mb-3">
+                <label asp-for="Date" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<input asp-for="Date" class="form-control datetimepicker" type="text"/>
+					<span asp-validation-for="Date" class="text-danger"></span>
+				</div>
+            </div>
+		
+			@*managing many to many relationship*@
+			<div class="row mb-3">
+				<label asp-for="UserIdsInput" class="col-2 col-form-label"></label>
+				<div class="col-5">
+					<select multiple asp-for="UserIdsInput" class="form-select select2" asp-items="ViewBag.UserId"></select>
+					<span asp-validation-for="UserIdsInput" class="text-danger"></span>
+				</div>
+			</div>
+
+            <div class="row mb-3">
+				<div class="offset-2 col-5">
+					<input type="submit" value="Save" class="btn btn-primary" />
+					&nbsp;&nbsp;
+                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+					&nbsp;&nbsp;
+					<a asp-action="Index">Back to List</a>
+				</div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+	<link href="~/lib/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" />
+	<script src="~/lib/jquery-datetimepicker/jquery.datetimepicker.full.min.js"></script>
+	<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+	<script src="~/lib/select2/js/select2.min.js"></script>
+
+	<script>
+		$(function(){
+			$(".datetimepicker").datetimepicker({
+				format: 'm/d/Y H:i:s',
+				timepicker: true
+			});
+
+			$(".select2").select2();
+		})
+	</script>
+}
+
+
+
+

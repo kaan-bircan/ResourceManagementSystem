@@ -1,0 +1,58 @@
+﻿@using Business.Models
+@model ResourceModel
+@*Generated from Custom Template.*@
+@*Model namespace using directive should be added to _ViewImports.cshtml.*@
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if(TempData["Message"] is not null)
+{
+    <p class="bg-info text-dark">@TempData["Message"]</p>
+}
+<div>
+    <h4>Resource</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.Score)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.Score)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.DateOutput)
+        </dt>
+        <dd class="col-10">
+            @Html.DisplayFor(model => model.DateOutput)
+        </dd>
+        <dt class="col-2">
+            @Html.DisplayNameFor(model => model.UserNamesOutput)
+        </dt>
+        <dd class="col-10">
+            @Html.Raw("<p>model.UserNamesOutput</p>")
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>&nbsp;|&nbsp;
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
