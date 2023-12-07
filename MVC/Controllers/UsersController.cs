@@ -2,8 +2,11 @@
 using Business;
 using Business.Results.Bases;
 using Business.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 //Generated from Custom Template.
 namespace MVC.Controllers
@@ -194,6 +197,33 @@ namespace MVC.Controllers
             TempData["Message"] = result.Message;
             return RedirectToAction(nameof(GetList));
          
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Login(UserModel user)
+        {
+           var existingUser = _userService.Query().SingleOrDefault(u => u.UserName == user.UserName && u.Password == user.Password 
+           && u.IsActive);
+            if (existingUser == null)
+            {
+                ModelState.AddModelError("", "Invalid user name or password");
+                return View();
+            }
+            List<Claim> userClaims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, existingUser.UserName),
+                new Claim(ClaimTypes.Role, existingUser.RoleNameOutput)
+            };
+            var userIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var userPrincipal = new ClaimsPrincipal(userIdentity);
+            HttpContext.SignInAsync(userPrincipal);
+         
+            return RedirectToAction("Home", "Index");
         }
 	}
 }
