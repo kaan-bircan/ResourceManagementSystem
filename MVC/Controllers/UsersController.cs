@@ -4,6 +4,7 @@ using Business.Results.Bases;
 using Business.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
@@ -26,9 +27,10 @@ namespace MVC.Controllers
 			_userService = userService;
 			_roleService = roleService;
 		}
-		#endregion
+        #endregion
 
-		// GET: Users/GetList
+        // GET: Users/GetList
+        [Authorize]
 		public IActionResult GetList()
         {
             // A query is executed and the result is stored in the collection
@@ -43,6 +45,7 @@ namespace MVC.Controllers
 
         // Returning user list in JSON format:
         // GET: Users/GetListJson
+        [Authorize(Roles = "admin")]
         public JsonResult GetListJson()
         {
             var userList = _userService.Query().ToList();
