@@ -3,6 +3,12 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <h1 class="display-4">Welcome to @AppSettings.AppTitle</h1>
+    }
+    else
+    {
+		<h1 class="display-4">Welcome to @AppSettings.AppTitle <b>@User.Identity.Name</b></h1>
+    }
 </div>

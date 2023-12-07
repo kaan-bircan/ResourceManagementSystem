@@ -10,10 +10,12 @@ using DataAccess.Contexts;
 using DataAccess.Entities;
 using Business.Services;
 using Business.Models;
+using Microsoft.AspNetCore.Authorization;
 
 //Generated from Custom Template.
 namespace MVC.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class RolesController : Controller
     {
         // TODO: Add service injections here

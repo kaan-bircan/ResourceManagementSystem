@@ -37,7 +37,7 @@ public class UserModel
     public string UserName { get; set; }
 
 	[Required(ErrorMessage = "{0} is required!")]
-	[StringLength(8, MinimumLength = 5, ErrorMessage = "{0} must be minimum {2} maximum {1} characters!")]
+	[StringLength(8, MinimumLength = 3, ErrorMessage = "{0} must be minimum {2} maximum {1} characters!")]
 	public string Password { get; set; }
 
     [DisplayName("Active")]
@@ -49,7 +49,7 @@ public class UserModel
     // Way 1: if "The value '' is invalid." validation message is wanted to be shown
     //public int RoleId { get; set; }
     // Way 2: if the validation message is wanted to be customized
-    [Required(ErrorMessage = "{0} is required!")]
+   [Required(ErrorMessage = "{0} is required!")]
     public int? RoleId { get; set; }
     #endregion
 

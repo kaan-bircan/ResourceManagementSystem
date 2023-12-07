@@ -1,8 +1,10 @@
 using Business;
 using Business.Services;
 using DataAccess.Contexts;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using MVC.Settings;
 using System;
 using System.Globalization;
 
@@ -76,6 +78,18 @@ builder.Services.AddScoped<IResourceService, ResourceService>();
 
 builder.Services.AddControllersWithViews();
 
+#region
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(config =>
+     {
+         config.LoginPath = "/Account/Login";//giriþ yapýlmadan iþlem yapýlýrsa yönlendir
+         config.AccessDeniedPath = "/Account/AccessDenied";//giriþ yaptýktan sonra yetki dýþý iþlem
+         config.ExpireTimeSpan = TimeSpan.FromMinutes(AppSettings.CookieExpirationInMinutes);//cookie 30 dakika kullanýlabilir,iþlem yapýlýrsa 30 yenilenir
+         config.SlidingExpiration = true;
+     });
+#endregion
+
 var app = builder.Build();
 
 #region Localization
@@ -99,7 +113,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+#region Authentication
+app.UseAuthentication();
+#endregion
 app.UseAuthorization();
 
 app.MapControllerRoute(

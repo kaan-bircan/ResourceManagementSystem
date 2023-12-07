@@ -199,13 +199,17 @@ namespace MVC.Controllers
          
         }
 
+        #region User Authentication
+        //~/Account/Login
+        //[Route("Account/{action}")]
+        [HttpGet("Account/{action}")]
         public IActionResult Login()
         {
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Login(UserModel user)
+        [HttpPost("Account/{action}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(UserModel user)
         {
            var existingUser = _userService.Query().SingleOrDefault(u => u.UserName == user.UserName && u.Password == user.Password 
            && u.IsActive);
@@ -221,9 +225,24 @@ namespace MVC.Controllers
             };
             var userIdentity = new ClaimsIdentity(userClaims, CookieAuthenticationDefaults.AuthenticationScheme);
             var userPrincipal = new ClaimsPrincipal(userIdentity);
-            HttpContext.SignInAsync(userPrincipal);
+           
+            await HttpContext.SignInAsync(userPrincipal);
          
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
         }
-	}
+
+        [HttpGet("Account/{action}")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("Account/{action}")]
+        public IActionResult AccessDenied()
+        {
+            return View("_Error", "No access to this operation");
+        }
+        #endregion
+    }
 }
