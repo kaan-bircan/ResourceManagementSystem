@@ -52,6 +52,8 @@ namespace MVC.Controllers
             return Json(userList);
         }
 
+
+        [Authorize]
         // GET: Users/Details/5
         public IActionResult Details(int id)
         {
@@ -143,6 +145,7 @@ namespace MVC.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             UserModel user = _userService.Query().SingleOrDefault(u => u.Id == id);
@@ -160,6 +163,7 @@ namespace MVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(UserModel user)
         {
             if (ModelState.IsValid)
@@ -180,6 +184,7 @@ namespace MVC.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             UserModel user = _userService.Query().SingleOrDefault(u => u.Id == id);
@@ -193,6 +198,7 @@ namespace MVC.Controllers
         // POST: Users/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             // TODO: Add delete service logic here

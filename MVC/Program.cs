@@ -3,6 +3,7 @@ using Business.Services;
 using DataAccess.Contexts;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MVC.Settings;
 using System;
@@ -117,6 +118,12 @@ app.UseRouting();
 app.UseAuthentication();
 #endregion
 app.UseAuthorization();
+
+// default Route
+app.MapControllerRoute(
+      name: "register",
+      pattern: "register",
+      defaults: new { controller = "Users", action = "Create" });
 
 app.MapControllerRoute(
     name: "default",
