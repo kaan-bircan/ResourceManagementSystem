@@ -13,11 +13,13 @@ using Business.Models;
 using Business;
 using System.Diagnostics;
 using Business.Results.Bases;
+using Microsoft.AspNetCore.Authorization;
 
 
 //Generated from Custom Template.
 namespace MVC.Controllers
 {
+    [Authorize]
     public class ResourcesController : Controller
     {
         // TODO: Add service injections here
@@ -30,6 +32,7 @@ namespace MVC.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         // GET: Resources
         public IActionResult Index()
         {

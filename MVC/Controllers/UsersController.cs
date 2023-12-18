@@ -2,6 +2,7 @@
 using Business;
 using Business.Results.Bases;
 using Business.Services;
+using DataAccess.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -115,6 +116,12 @@ namespace MVC.Controllers
         {
             if (ModelState.IsValid) // validates the user action parameter (model) through data annotations above its properties
             {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    user.Status = Statuses.Junior;
+                    user.IsActive = true;
+                    user.RoleId = (int)Roles.User;
+                }
                 // If model data is valid, insert service logic should be written here.
                 Result result = _userService.Add(user); // result referenced object can be of type SuccessResult or ErrorResult
                 if (result.IsSuccessful)
